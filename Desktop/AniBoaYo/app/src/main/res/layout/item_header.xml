@@ -12,12 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
         app:cardBackgroundColor="#5C6BC0"
-        app:cardCornerRadius="6dp"
-        app:contentPadding="@dimen/activity_horizontal_margin">
+        app:cardCornerRadius="6dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/text_Date"
@@ -58,7 +57,7 @@
                 custom:selected_height="6dp"
                 custom:unselected_width="6dp"
                 custom:unselected_height="6dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 />
 
         </RelativeLayout>

@@ -79,7 +79,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             VHheader.mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
             VHheader.mDemoSlider.setCustomIndicator(VHheader.indicator);
             VHheader.mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-            VHheader.mDemoSlider.setDuration(6000);
+            VHheader.mDemoSlider.setDuration(5000);
             VHheader.mDemoSlider.addOnPageChangeListener(this);
 
             for(int i=0; i<mangas.length; i++){
