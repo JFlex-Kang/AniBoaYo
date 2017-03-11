@@ -84,7 +84,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             for(int i=0; i<mangas.length; i++){
                 TextSliderView textSliderView = new TextSliderView(context);
-                textSliderView.description(mangas[i]).image(images[i]).setScaleType(BaseSliderView.ScaleType.Fit).setOnSliderClickListener(this);
+                textSliderView.description(mangas[i]).error(R.drawable.not_found).image(images[i]).setScaleType(BaseSliderView.ScaleType.Fit).setOnSliderClickListener(this);
                 textSliderView.bundle(new Bundle());
                 textSliderView.getBundle().putString("extra",mangas[i]);
 
