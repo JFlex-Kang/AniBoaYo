@@ -1,6 +1,8 @@
 package com.masterpiece.cracking.aniboayo;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,11 +37,15 @@ public class EpisodesOfMangaActivity extends AppCompatActivity {
 
     private ListView listview;
     private EpisodeListAdapter adapter;
+    private CustomProgressDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_episodes_manga);
+
+        dialog = new CustomProgressDialog(this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         manga_href = PreferencesUtil.getPreferences(this, "href");
         manga_name = PreferencesUtil.getPreferences(this, "manga_name");
@@ -74,6 +80,12 @@ public class EpisodesOfMangaActivity extends AppCompatActivity {
         class jerichoParsingTask extends AsyncTask<Void, Void, Void> {
 
             @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                dialog.show();
+            }
+
+            @Override
             protected Void doInBackground(Void... params) {
 
                 try {
@@ -82,7 +94,7 @@ public class EpisodesOfMangaActivity extends AppCompatActivity {
 
                     List<Element> divTags = source.getAllElementsByClass("contents");
 
-                    Element con_el = divTags.get(6);
+                    Element con_el = divTags.get(5);
                     List<Element> aTags = con_el.getAllElements(HTMLElementName.A);
 
                     episode_hrefs = new String[aTags.size()];
@@ -109,6 +121,7 @@ public class EpisodesOfMangaActivity extends AppCompatActivity {
                     adapter.addItem(episode_names[i]);
                 }
                 adapter.notifyDataSetChanged();
+                dialog.dismiss();
             }
         }
         jerichoParsingTask task = new jerichoParsingTask();

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        app:cardBackgroundColor="#5C6BC0"
+        app:cardBackgroundColor="#000033"
         app:cardCornerRadius="6dp">
 
         <RelativeLayout
@@ -30,9 +30,8 @@
             <com.daimajia.slider.library.SliderLayout
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:layout_below="@+id/text_Date"
-                android:layout_marginTop="15sp"
                 custom:auto_cycle="true"
                 custom:indicator_visibility="visible"
                 custom:pager_animation="Accordion"

@@ -1,6 +1,7 @@
 package com.masterpiece.cracking.aniboayo;
 
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -48,11 +49,15 @@ public class MangaListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MangasAdapter mangasAdapter;
     private List<Manga> mangaList;
+    private CustomProgressDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_main);
+
+        dialog = new CustomProgressDialog(this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,6 +87,12 @@ public class MangaListActivity extends AppCompatActivity {
     private void prepareMangas() {
 
         class jerichoParseTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                dialog.show();
+            }
 
             @Override
             protected Void doInBackground(Void... params) {
@@ -377,6 +388,8 @@ public class MangaListActivity extends AppCompatActivity {
                 recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(mangasAdapter);
+
+                dialog.dismiss();
             }
         }
         jerichoParseTask task = new jerichoParseTask();

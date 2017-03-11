@@ -57,6 +57,7 @@ public class yo_main extends ActionBarActivity {
     private LinearLayoutManager linearLayoutManager;
     private List<CardItem> listItems;
     private InfoDialog mDialog;
+    private CustomProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +71,13 @@ public class yo_main extends ActionBarActivity {
             isOnline(CONNECTION_TEST_URL,1000);
             isOnline = PreferencesUtil.getPreferences(this,"isOnline");
             if(isOnline.equals("true")){
+
                 AdView mAdView = (AdView) findViewById(R.id.adView);
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
+
+                dialog = new CustomProgressDialog(this);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                 Calendar c = Calendar.getInstance();
                 today = String.valueOf(c.get(Calendar.MONTH) + 1) + "월";
@@ -99,6 +104,7 @@ public class yo_main extends ActionBarActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                dialog.show();
             }
 
             @Override
@@ -313,6 +319,7 @@ public class yo_main extends ActionBarActivity {
                 RecyclerAdapter adapter = new RecyclerAdapter(yo_main.this, mHeader, listItems, today_mangas, img, href_mangas);
                 recyclerView.setAdapter(adapter);
 
+                dialog.dismiss();
             }
         }
         jerichoParsingTask task = new jerichoParsingTask();

@@ -1,5 +1,7 @@
 package com.masterpiece.cracking.aniboayo;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,11 +30,15 @@ public class ViewMangaActivity extends AppCompatActivity {
 
     private ListView listview;
     private ArrayList<ViewItem> data;
+    private CustomProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_manga);
+
+        dialog = new CustomProgressDialog(this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         listview = (ListView) findViewById(R.id.listview);
         data = new ArrayList<>();
@@ -48,6 +54,7 @@ public class ViewMangaActivity extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                dialog.show();
             }
 
             @Override
@@ -83,6 +90,8 @@ public class ViewMangaActivity extends AppCompatActivity {
 
                 ViewListAdapter adapter = new ViewListAdapter(ViewMangaActivity.this, R.layout.item_views, data);
                 listview.setAdapter(adapter);
+
+                dialog.dismiss();
             }
         }
         JSoupParseTask task = new JSoupParseTask();
