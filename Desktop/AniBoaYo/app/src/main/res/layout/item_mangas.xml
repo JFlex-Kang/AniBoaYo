@@ -30,22 +30,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/thumbnail"
-                android:paddingLeft="@dimen/album_title_padding"
-                android:paddingRight="@dimen/album_title_padding"
-                android:paddingTop="@dimen/album_title_padding"
+                android:layout_margin="10dp"
                 android:textColor="#4c4c4c"
                 android:textSize="@dimen/album_title" />
 
-
             <ImageView
-                android:id="@+id/overflow"
-                android:layout_width="@dimen/ic_album_overflow_width"
-                android:layout_height="@dimen/ic_album_overflow_height"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/thumbnail"
-                android:layout_marginTop="@dimen/ic_album_overflow_margin_top"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_action_overflow" />
+                android:id="@+id/img_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/title"
+                android:layout_alignRight="@+id/title"
+                android:background="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="3dp"
+                android:contentDescription="favs"
+                android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
 
