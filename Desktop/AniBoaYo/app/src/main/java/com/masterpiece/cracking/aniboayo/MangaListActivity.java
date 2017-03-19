@@ -379,7 +379,7 @@ public class MangaListActivity extends AppCompatActivity {
                         mangaList.add(manga);
                     }
                 }
-                mangasAdapter = new MangasAdapter(MangaListActivity.this, mangaList, mangas);
+                mangasAdapter = new MangasAdapter(MangaListActivity.this, mangaList);
 
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MangaListActivity.this, 2);
                 recyclerView.setLayoutManager(layoutManager);
@@ -430,7 +430,7 @@ public class MangaListActivity extends AppCompatActivity {
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+    public static class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
         private int spacing;

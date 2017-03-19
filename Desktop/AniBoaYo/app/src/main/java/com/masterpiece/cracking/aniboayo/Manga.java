@@ -8,7 +8,6 @@ public class Manga {
     private int id;
     private String name;
     private String imgUrl;
-
     private String manga_url;
 
     public Manga(int id, String Name,String manga_url, String ImgUrl) {
@@ -74,6 +73,6 @@ public class Manga {
 
     @Override
     public String toString() {
-        return "Manga [id="+id+", name="+name+", manga_Url="+manga_url+"]";
+        return "Manga [id="+id+", name="+name+", manga_Url="+manga_url+", img_Url="+imgUrl+"]";
     }
 }

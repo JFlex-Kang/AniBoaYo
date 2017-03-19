@@ -2,32 +2,27 @@ package com.masterpiece.cracking.aniboayo;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
-
-
-import net.htmlparser.jericho.Element;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,14 +32,13 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by User on 2017-02-17.
+ * Created by Cracking on 3/16/2017.
  */
 
-public class yo_main extends ActionBarActivity {
+public class FragmentMenu extends Fragment{
 
     private Source source;
     public static final String CONNECTION_TEST_URL = "http://google.com";
-    private String contact = "9929kmj@naver.com";
     private String today;
     private String[] week = {"일", "월", "화", "수", "목", "금", "토"};
     private String[] today_mangas;
@@ -56,27 +50,34 @@ public class yo_main extends ActionBarActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<CardItem> listItems;
-    private InfoDialog mDialog;
     private CustomProgressDialog dialog;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public FragmentMenu(){
 
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF010139));
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.frag_menu,container,false);
 
         isNetworkConnected = isNetworkConnected();
         if(isNetworkConnected == true){
             isOnline(CONNECTION_TEST_URL,1000);
-            isOnline = PreferencesUtil.getPreferences(this,"isOnline");
+            isOnline = PreferencesUtil.getPreferences(getContext(),"isOnline");
             if(isOnline.equals("true")){
 
-                AdView mAdView = (AdView) findViewById(R.id.adView);
+                AdView mAdView = (AdView) view.findViewById(R.id.adView);
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
 
-                dialog = new CustomProgressDialog(this);
+                dialog = new CustomProgressDialog(getContext());
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                 Calendar c = Calendar.getInstance();
@@ -85,8 +86,8 @@ public class yo_main extends ActionBarActivity {
                 today += week[c.get(Calendar.DAY_OF_WEEK) - 1] + "요일";
 
                 listItems = new ArrayList<CardItem>();
-                recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-                linearLayoutManager = new LinearLayoutManager(this);
+                recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+                linearLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(linearLayoutManager);
 
                 loadDailyAni();
@@ -96,6 +97,8 @@ public class yo_main extends ActionBarActivity {
         }else{
             errorAlert();
         }
+
+        return view;
     }
 
     private void loadDailyAni() {
@@ -316,7 +319,7 @@ public class yo_main extends ActionBarActivity {
                 mHeader = new HeaderItem();
                 mHeader.setDate(today);
 
-                RecyclerAdapter adapter = new RecyclerAdapter(yo_main.this, mHeader, listItems, today_mangas, img, href_mangas);
+                RecyclerAdapter adapter = new RecyclerAdapter(getContext(), mHeader, listItems, today_mangas, img, href_mangas);
                 recyclerView.setAdapter(adapter);
 
                 dialog.dismiss();
@@ -326,15 +329,9 @@ public class yo_main extends ActionBarActivity {
         task.execute();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-    }
-
     //네트워크 상태 체크
     private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
     }
 
@@ -364,7 +361,7 @@ public class yo_main extends ActionBarActivity {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
 
-                PreferencesUtil.setPreferences(yo_main.this,"isOnline", String.valueOf(isOnline));
+                PreferencesUtil.setPreferences(getContext(),"isOnline", String.valueOf(isOnline));
             }
         }
         connectionTask task = new connectionTask();
@@ -372,7 +369,7 @@ public class yo_main extends ActionBarActivity {
     }
 
     public void errorAlert(){
-        View view = this.getLayoutInflater().inflate(R.layout.dlg_not_connect,null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dlg_not_connect,null);
 
         TextView txtTitle = (TextView)view.findViewById(R.id.title);
         txtTitle.setTextSize(20);
@@ -383,11 +380,11 @@ public class yo_main extends ActionBarActivity {
         txtMsg.setTextSize(15);
         txtMsg.setText("네트워크 연결 후 다시 실행해보세요.");
 
-        AlertDialog.Builder alt = new AlertDialog.Builder(this);
+        AlertDialog.Builder alt = new AlertDialog.Builder(getContext());
         alt.setView(view).setCancelable(false).setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
+                getActivity().finish();
             }
         });
 
@@ -396,48 +393,4 @@ public class yo_main extends ActionBarActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_item, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        switch (item.getItemId()) {
-            case R.id.refresh:
-                finish();
-                startActivity(getIntent());
-                break;
-            case R.id.info:
-                mDialog = new InfoDialog(this, exitClickListener, contactClickListener);
-                mDialog.show();
-                break;
-            default:
-                break;
-        }
-        return true;
-    }
-
-    private View.OnClickListener exitClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mDialog.dismiss();
-        }
-    };
-
-    private View.OnClickListener contactClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("message/rfc822");
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{contact});
-            intent.putExtra(Intent.EXTRA_SUBJECT, "To Developer..");
-            intent.putExtra(Intent.EXTRA_TEXT, "");
-            startActivity(Intent.createChooser(intent, "Send mail..."));
-        }
-    };
 }

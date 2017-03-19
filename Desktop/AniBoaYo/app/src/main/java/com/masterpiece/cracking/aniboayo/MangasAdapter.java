@@ -3,6 +3,7 @@ package com.masterpiece.cracking.aniboayo;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import java.util.List;
 
 public class MangasAdapter extends RecyclerView.Adapter<MangasAdapter.MyViewholder> {
 
-    private String[] manga_names;
     private Context mContext;
     private List<Manga> mangaList;
     private PreferencesUtil preferencesUtil;
@@ -64,10 +64,9 @@ public class MangasAdapter extends RecyclerView.Adapter<MangasAdapter.MyViewhold
         }
     }
 
-    public MangasAdapter(Context mContext, List<Manga> mangaList, String[] manga_names) {
+    public MangasAdapter(Context mContext, List<Manga> mangaList) {
         this.mContext = mContext;
         this.mangaList = mangaList;
-        this.manga_names = manga_names;
         preferencesUtil = new PreferencesUtil();
     }
 
